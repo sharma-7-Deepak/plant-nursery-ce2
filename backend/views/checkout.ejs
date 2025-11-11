@@ -1,0 +1,1126 @@
+<link rel="stylesheet" href="/css/style.css">
+<style>
+:root {
+  --primary-green: #2d5a27;
+  --light-green: #7fb069;
+  --pale-green: #e8f5e8;
+}
+
+/* Checkout Page Layout */
+.checkout-page {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #f8f9fa 0%, #e8f5e8 100%);
+  padding: 2rem 0;
+}
+
+.container {
+  max-width: 1200px;
+  margin: auto;
+  padding: 2rem;
+}
+
+/* Checkout Header */
+.checkout-header {
+  background: white;
+  padding: 2rem;
+  border-radius: 12px;
+  margin-bottom: 2rem;
+  box-shadow: 0 4px 15px rgba(45, 90, 39, 0.1);
+}
+
+.checkout-header h1 {
+  text-align: center;
+  color: var(--primary-green);
+  margin-bottom: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+/* Progress Steps */
+.checkout-steps {
+  display: flex;
+  justify-content: space-between;
+  max-width: 600px;
+  margin: 0 auto;
+  position: relative;
+}
+
+.checkout-steps::before {
+  content: '';
+  position: absolute;
+  top: 20px;
+  left: 50px;
+  right: 50px;
+  height: 2px;
+  background: #ddd;
+  z-index: 0;
+}
+
+.step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  position: relative;
+  z-index: 1;
+}
+
+.step-number {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: #ddd;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  transition: all 0.3s;
+}
+
+.step.active .step-number {
+  background: var(--primary-green);
+}
+
+.step-title {
+  font-size: 0.9rem;
+  color: #666;
+  font-weight: 500;
+}
+
+.step.active .step-title {
+  color: var(--primary-green);
+  font-weight: 600;
+}
+
+/* Content Layout */
+.checkout-content {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 2rem;
+  align-items: flex-start;
+}
+
+/* Main Content */
+.checkout-main {
+  background: white;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(45, 90, 39, 0.1);
+}
+
+.checkout-step {
+  display: none;
+}
+
+.checkout-step#step-1 {
+  display: block;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.checkout-step h2 {
+  color: var(--primary-green);
+  margin-bottom: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* Promo Code Section */
+.promo-code {
+  margin: 2rem 0;
+  padding: 1.5rem;
+  background: #f8f9fa;
+  border-radius: 8px;
+}
+
+.promo-code h3 {
+  color: var(--primary-green);
+  margin-bottom: 1rem;
+  font-size: 1.1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.promo-input {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.promo-input input {
+  flex: 1;
+  padding: 0.75rem;
+  border: 2px solid #ddd;
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: border-color 0.3s;
+}
+
+.promo-input input:focus {
+  outline: none;
+  border-color: var(--primary-green);
+}
+
+/* Buttons */
+.btn {
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  text-decoration: none;
+}
+
+.btn-primary {
+  background: var(--primary-green);
+  color: white;
+}
+
+.btn-primary:hover {
+  background: #1f3f1c;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(45, 90, 39, 0.3);
+}
+
+.btn-secondary {
+  background: #6c757d;
+  color: white;
+}
+
+.btn-secondary:hover {
+  background: #5a6268;
+}
+
+.btn-apply {
+  background: var(--light-green);
+  color: white;
+}
+
+.btn-apply:hover {
+  background: #6fa055;
+}
+
+.btn-lg {
+  padding: 1rem 2rem;
+  font-size: 1.1rem;
+}
+
+.step-actions {
+  display: flex;
+  gap: 1rem;
+  margin-top: 2rem;
+  justify-content: space-between;
+}
+
+/* Form Styles */
+.form-group {
+  margin-bottom: 1rem;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+  color: #333;
+}
+
+.form-group input,
+.form-group select {
+  width: 100%;
+  padding: 0.75rem;
+  border: 2px solid #ddd;
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: border-color 0.3s;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+  outline: none;
+  border-color: var(--primary-green);
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+}
+
+/* Shipping Options */
+.shipping-options {
+  margin-top: 2rem;
+}
+
+.shipping-options h3 {
+  color: var(--primary-green);
+  margin-bottom: 1rem;
+}
+
+.shipping-option {
+  display: flex;
+  align-items: center;
+  padding: 1rem;
+  border: 2px solid #ddd;
+  border-radius: 8px;
+  margin-bottom: 0.75rem;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.shipping-option:hover {
+  border-color: var(--light-green);
+  background: #f8f9fa;
+}
+
+.shipping-option input[type="radio"] {
+  margin-right: 1rem;
+}
+
+.shipping-option label {
+  flex: 1;
+  display: flex;
+  justify-content: space-between;
+  cursor: pointer;
+}
+
+/* Payment Methods */
+.payment-methods {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.payment-method {
+  padding: 1.5rem;
+  border: 2px solid #ddd;
+  border-radius: 8px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.payment-method:hover {
+  border-color: var(--light-green);
+  background: #f8f9fa;
+}
+
+.payment-method.active {
+  border-color: var(--primary-green);
+  background: var(--pale-green);
+}
+
+.payment-method i {
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+  color: var(--primary-green);
+}
+
+.payment-form {
+  display: none;
+}
+
+.payment-form.card-payment {
+  display: block;
+}
+
+/* Sidebar */
+.checkout-sidebar {
+  position: sticky;
+  top: 2rem;
+}
+
+.order-summary {
+  background: white;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(45, 90, 39, 0.1);
+}
+
+.order-summary h3 {
+  color: var(--primary-green);
+  margin-bottom: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.summary-totals {
+  margin-top: 1.5rem;
+  padding-top: 1.5rem;
+  border-top: 2px solid #eee;
+}
+
+.total-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0.75rem;
+  font-size: 1rem;
+}
+
+.total-row.discount-row {
+  color: var(--light-green);
+  font-weight: 600;
+}
+
+.total-row.final-total {
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 2px solid #eee;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--primary-green);
+}
+
+/* Success Modal */
+.success-modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.7);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 10000;
+}
+
+.success-modal .modal-content {
+  background: white;
+  padding: 3rem;
+  border-radius: 16px;
+  text-align: center;
+  max-width: 500px;
+  animation: slideUp 0.3s;
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(50px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.success-icon {
+  font-size: 4rem;
+  color: #28a745;
+  margin-bottom: 1rem;
+}
+
+.success-modal h2 {
+  color: var(--primary-green);
+  margin-bottom: 1rem;
+}
+
+.order-details {
+  margin: 2rem 0;
+  padding: 1.5rem;
+  background: #f8f9fa;
+  border-radius: 8px;
+}
+
+.success-actions {
+  margin-top: 2rem;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .checkout-content {
+    grid-template-columns: 1fr;
+  }
+  
+  .checkout-steps {
+    flex-direction: column;
+    gap: 1rem;
+  }
+  
+  .checkout-steps::before {
+    display: none;
+  }
+  
+  .payment-methods {
+    grid-template-columns: 1fr;
+  }
+}
+</style>
+
+
+<div class="checkout-page">
+  <div class="container">
+    <div class="checkout-header">
+      <h1><i class="fas fa-shopping-bag"></i> Secure Checkout</h1>
+      <div class="checkout-steps">
+        <div class="step active" data-step="1">
+          <span class="step-number">1</span>
+          <span class="step-title">Order Summary</span>
+        </div>
+        <div class="step" data-step="2">
+          <span class="step-number">2</span>
+          <span class="step-title">Shipping Info</span>
+        </div>
+        <div class="step" data-step="3">
+          <span class="step-number">3</span>
+          <span class="step-title">Payment</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="checkout-content">
+      <div class="checkout-main">
+        <!-- Step 1 -->
+        <div class="checkout-step active" id="step-1">
+          <h2><i class="fas fa-list-ul"></i> Order Summary</h2>
+          <div class="order-items" id="checkout-items"></div>
+
+          <div class="promo-code">
+            <h3><i class="fas fa-tag"></i> Have a Promo Code?</h3>
+            <div class="promo-input">
+              <input type="text" id="promoCode" placeholder="Enter code (e.g., PLANT20)">
+              <button class="btn btn-apply" onclick="applyPromoCode()">
+                <i class="fas fa-check"></i> Apply
+              </button>
+            </div>
+          </div>
+
+          <div class="step-actions">
+            <a href="/products" class="btn btn-secondary"><i class="fas fa-arrow-left"></i> Continue Shopping</a>
+            <button class="btn btn-primary" onclick="nextStep()">Continue to Shipping <i class="fas fa-arrow-right"></i></button>
+          </div>
+        </div>
+
+        <!-- Step 2 -->
+        <div class="checkout-step" id="step-2">
+          <h2><i class="fas fa-shipping-fast"></i> Shipping Information</h2>
+          <form class="shipping-form">
+            <div class="form-row">
+              <div class="form-group">
+                <label for="firstName">First Name *</label>
+                <input type="text" id="firstName" required>
+              </div>
+              <div class="form-group">
+                <label for="lastName">Last Name *</label>
+                <input type="text" id="lastName" required>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="email">Email Address *</label>
+              <input type="email" id="email" required>
+            </div>
+
+            <div class="form-group">
+              <label for="phone">Phone Number *</label>
+              <input type="tel" id="phone" required>
+            </div>
+
+            <div class="form-group">
+              <label for="address">Address *</label>
+              <input type="text" id="address" placeholder="Street address" required>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="city">City *</label>
+                <input type="text" id="city" required>
+              </div>
+              <div class="form-group">
+                <label for="state">State *</label>
+                <select id="state" required>
+                  <option value="">Select State</option>
+                  <option value="CA">California</option>
+                  <option value="TX">Texas</option>
+                  <option value="NY">New York</option>
+                  <option value="FL">Florida</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="zipCode">ZIP Code *</label>
+                <input type="text" id="zipCode" required>
+              </div>
+            </div>
+
+            <div class="shipping-options">
+              <h3>Shipping Method</h3>
+              <div class="shipping-option">
+                <input type="radio" id="standard" name="shipping" value="standard" checked>
+                <label for="standard">
+                  <span class="option-name">Standard (5–7 days)</span>
+                  <span class="option-price">$9.99</span>
+                </label>
+              </div>
+              <div class="shipping-option">
+                <input type="radio" id="express" name="shipping" value="express">
+                <label for="express">
+                  <span class="option-name">Express (2–3 days)</span>
+                  <span class="option-price">$19.99</span>
+                </label>
+              </div>
+            </div>
+          </form>
+
+          <div class="step-actions">
+            <button class="btn btn-secondary" onclick="prevStep()"><i class="fas fa-arrow-left"></i> Back to Order</button>
+            <button class="btn btn-primary" onclick="nextStep()">Continue to Payment <i class="fas fa-arrow-right"></i></button>
+          </div>
+        </div>
+
+        <!-- Step 3 -->
+        <div class="checkout-step" id="step-3">
+          <h2><i class="fas fa-credit-card"></i> Payment Information</h2>
+          <div class="payment-methods">
+            <div class="payment-method active" data-method="card">
+              <i class="fas fa-credit-card"></i>
+              <span>Credit/Debit Card</span>
+            </div>
+            <div class="payment-method" data-method="paypal">
+              <i class="fab fa-paypal"></i>
+              <span>PayPal</span>
+            </div>
+          </div>
+
+          <div class="payment-form card-payment">
+            <div class="form-group">
+              <label for="cardNumber">Card Number *</label>
+              <input type="text" id="cardNumber" placeholder="1234 5678 9012 3456" required>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label for="expiryDate">Expiry *</label>
+                <input type="text" id="expiryDate" placeholder="MM/YY" required>
+              </div>
+              <div class="form-group">
+                <label for="cvv">CVV *</label>
+                <input type="text" id="cvv" placeholder="123" required>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="cardName">Name on Card *</label>
+              <input type="text" id="cardName" required>
+            </div>
+          </div>
+
+          <div class="step-actions">
+            <button class="btn btn-secondary" onclick="prevStep()"><i class="fas fa-arrow-left"></i> Back</button>
+            <button class="btn btn-primary btn-lg" onclick="processPayment()">
+              <i class="fas fa-lock"></i> Complete Order Securely
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="checkout-sidebar">
+        <div class="order-summary">
+          <h3><i class="fas fa-receipt"></i> Order Summary</h3>
+          <div class="summary-items" id="summary-items"></div>
+          <div class="summary-totals">
+            <div class="total-row"><span>Subtotal:</span><span id="subtotal-amount">$0.00</span></div>
+            <div class="total-row"><span>Shipping:</span><span id="shipping-amount">$9.99</span></div>
+            <div class="total-row"><span>Tax:</span><span id="tax-amount">$0.00</span></div>
+            <div class="total-row discount-row" id="discount-row" style="display:none;">
+              <span>Discount:</span><span id="discount-amount">-$0.00</span>
+            </div>
+            <div class="total-row final-total"><span>Total:</span><span id="final-total">$0.00</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Success Modal -->
+<div class="modal success-modal" id="success-modal">
+  <div class="modal-content">
+    <div class="success-icon"><i class="fas fa-check-circle"></i></div>
+    <h2>Order Confirmed!</h2>
+    <p>Thank you for your purchase. Your order will be shipped soon.</p>
+    <div class="order-details">
+      <p><strong>Order #:</strong> <span id="order-number"></span></p>
+      <p><strong>Est. Delivery:</strong> <span id="delivery-date"></span></p>
+    </div>
+    <div class="success-actions">
+      <a href="/products" class="btn btn-secondary">Continue Shopping</a>
+    </div>
+  </div>
+</div>
+
+<!-- Loading Overlay -->
+<div id="loading-overlay">
+  <div class="spinner"></div>
+  <p>Processing Payment...</p>
+</div>
+
+<style>
+#loading-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(255,255,255,0.85);
+  backdrop-filter: blur(3px);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  z-index: 100000;
+}
+#loading-overlay .spinner {
+  width: 60px; height: 60px;
+  border: 5px solid #ccc;
+  border-top-color: var(--primary-green);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-bottom: 1rem;
+}
+@keyframes spin {to {transform: rotate(360deg)}}
+</style>
+
+<script>
+// ============================================================
+// CHECKOUT PAGE - COMPLETE WORKING VERSION
+// ============================================================
+
+let currentStep = 1;
+let cartData = null;
+let shippingCost = 9.99;
+let taxRate = 0.08;
+let appliedDiscount = 0;
+let appliedPromoCode = '';
+
+// ============================================================
+// INITIALIZATION
+// ============================================================
+
+function initializeCheckout() {
+  console.log('🚀 Initializing checkout...');
+  loadCartData();
+  updateOrderSummary();
+  setupEventListeners();
+  
+  // Make sure only step 1 is visible
+  document.getElementById('step-1').style.display = 'block';
+  document.getElementById('step-2').style.display = 'none';
+  document.getElementById('step-3').style.display = 'none';
+  
+  console.log('✅ Checkout ready - Step 1 visible');
+}
+
+function loadCartData() {
+  try {
+    const savedCart = localStorage.getItem('plant-nursery-cart');
+    if (savedCart) {
+      const items = JSON.parse(savedCart);
+      cartData = {
+        items: items,
+        isEmpty: items.length === 0,
+        totalItems: items.reduce((sum, item) => sum + item.quantity, 0),
+        totalAmount: items.reduce((sum, item) => sum + (item.price * item.quantity), 0)
+      };
+      console.log('✅ Cart loaded:', cartData);
+    } else {
+      cartData = { items: [], isEmpty: true, totalItems: 0, totalAmount: 0 };
+    }
+    
+    if (cartData.isEmpty) {
+      console.log('⚠️ Cart empty, redirecting...');
+      setTimeout(() => window.location.href = '/products', 100);
+    }
+  } catch (error) {
+    console.error('❌ Error loading cart:', error);
+    cartData = { items: [], isEmpty: true, totalItems: 0, totalAmount: 0 };
+  }
+}
+
+function updateOrderSummary() {
+  if (!cartData || cartData.isEmpty) return;
+  
+  // Update cart items display
+  const checkoutItems = document.getElementById('checkout-items');
+  if (checkoutItems) {
+    checkoutItems.innerHTML = cartData.items.map(item => `
+      <div class="checkout-item" style="display:flex;gap:1rem;margin-bottom:1rem;padding:1rem;background:white;border-radius:8px;">
+        <img src="${item.image}" alt="${item.name}" style="width:80px;height:80px;object-fit:cover;border-radius:4px;">
+        <div style="flex:1;">
+          <h4 style="margin:0 0 0.5rem 0;color:var(--primary-green);">${item.name}</h4>
+          <p style="margin:0;color:#666;">Quantity: ${item.quantity}</p>
+          <p style="margin:0.5rem 0 0 0;font-weight:600;color:var(--primary-green);">$${(item.price * item.quantity).toFixed(2)}</p>
+        </div>
+      </div>
+    `).join('');
+  }
+  
+  // Update summary sidebar
+  const summaryItems = document.getElementById('summary-items');
+  if (summaryItems) {
+    summaryItems.innerHTML = cartData.items.map(item => `
+      <div style="display:flex;justify-content:space-between;margin-bottom:0.75rem;">
+        <span>${item.name} x${item.quantity}</span>
+        <span>$${(item.price * item.quantity).toFixed(2)}</span>
+      </div>
+    `).join('');
+  }
+  
+  // Calculate and update totals
+  const subtotal = cartData.totalAmount;
+  const tax = subtotal * taxRate;
+  const total = subtotal + shippingCost + tax - appliedDiscount;
+  
+  document.getElementById('subtotal-amount').textContent = `$${subtotal.toFixed(2)}`;
+  document.getElementById('tax-amount').textContent = `$${tax.toFixed(2)}`;
+  document.getElementById('final-total').textContent = `$${total.toFixed(2)}`;
+}
+
+function setupEventListeners() {
+  // Payment method selection
+  document.querySelectorAll('.payment-method').forEach(method => {
+    method.addEventListener('click', function() {
+      document.querySelectorAll('.payment-method').forEach(m => m.classList.remove('active'));
+      this.classList.add('active');
+      
+      const selectedMethod = this.getAttribute('data-method');
+      document.querySelectorAll('.payment-form').forEach(form => {
+        if (form.classList.contains(`${selectedMethod}-payment`)) {
+          form.style.display = 'block';
+        } else {
+          form.style.display = 'none';
+        }
+      });
+    });
+  });
+  
+  // Shipping method change
+  document.querySelectorAll('input[name="shipping"]').forEach(radio => {
+    radio.addEventListener('change', function() {
+      const prices = { standard: 9.99, express: 19.99 };
+      shippingCost = prices[this.value] || 9.99;
+      document.getElementById('shipping-amount').textContent = `$${shippingCost.toFixed(2)}`;
+      updateOrderSummary();
+    });
+  });
+}
+
+// ============================================================
+// GLOBAL FUNCTIONS (accessible from onclick)
+// ============================================================
+
+window.nextStep = function() {
+  console.log('▶️ BUTTON CLICKED - Moving from step', currentStep);
+  
+  // For step 1, just move to step 2 (no validation)
+  if (currentStep === 1) {
+    // Hide step 1
+    document.getElementById('step-1').style.display = 'none';
+    document.querySelectorAll('.step')[0].classList.remove('active');
+    
+    // Show step 2
+    document.getElementById('step-2').style.display = 'block';
+    document.querySelectorAll('.step')[1].classList.add('active');
+    
+    currentStep = 2;
+    console.log('✅ Now on step 2');
+    window.scrollTo(0, 0);
+    return;
+  }
+  
+  // For step 2, validate then move to step 3
+  if (currentStep === 2) {
+    const shippingFields = ['firstName', 'lastName', 'email', 'phone', 'address', 'city', 'state', 'zipCode'];
+    let valid = true;
+    
+    shippingFields.forEach(id => {
+      const el = document.getElementById(id);
+      if (!el || !el.value.trim()) {
+        if (el) el.style.borderColor = 'red';
+        valid = false;
+      } else {
+        if (el) el.style.borderColor = '';
+      }
+    });
+    
+    if (!valid) {
+      alert('⚠️ Please fill all shipping fields');
+      return;
+    }
+    
+    // Hide step 2
+    document.getElementById('step-2').style.display = 'none';
+    document.querySelectorAll('.step')[1].classList.remove('active');
+    
+    // Show step 3
+    document.getElementById('step-3').style.display = 'block';
+    document.querySelectorAll('.step')[2].classList.add('active');
+    
+    currentStep = 3;
+    console.log('✅ Now on step 3');
+    window.scrollTo(0, 0);
+  }
+}
+
+window.prevStep = function() {
+  console.log('◀️ BACK BUTTON - Moving from step', currentStep);
+  
+  if (currentStep === 2) {
+    // Hide step 2
+    document.getElementById('step-2').style.display = 'none';
+    document.querySelectorAll('.step')[1].classList.remove('active');
+    
+    // Show step 1
+    document.getElementById('step-1').style.display = 'block';
+    document.querySelectorAll('.step')[0].classList.add('active');
+    
+    currentStep = 1;
+    console.log('✅ Back to step 1');
+    window.scrollTo(0, 0);
+  } else if (currentStep === 3) {
+    // Hide step 3
+    document.getElementById('step-3').style.display = 'none';
+    document.querySelectorAll('.step')[2].classList.remove('active');
+    
+    // Show step 2
+    document.getElementById('step-2').style.display = 'block';
+    document.querySelectorAll('.step')[1].classList.add('active');
+    
+    currentStep = 2;
+    console.log('✅ Back to step 2');
+    window.scrollTo(0, 0);
+  }
+}
+
+window.applyPromoCode = function() {
+  console.log('🎟️ Apply promo code clicked');
+  
+  const promoInput = document.getElementById('promoCode');
+  const promoCode = promoInput.value.trim().toUpperCase();
+  
+  if (!promoCode) {
+    alert('⚠️ Please enter a promo code');
+    return;
+  }
+  
+  // Valid promo codes with discounts
+  const promoCodes = {
+    'SAVE10': 0.10,   // 10% off
+    'WELCOME': 0.15,  // 15% off
+    'PLANT20': 0.20   // 20% off
+  };
+  
+  if (promoCodes[promoCode]) {
+    const discount = cartData.totalAmount * promoCodes[promoCode];
+    
+    // Store discount globally
+    appliedDiscount = discount;
+    appliedPromoCode = promoCode;
+    
+    console.log('✅ Promo applied:', promoCode, 'Discount:', discount);
+    
+    // Show discount row
+    const discountRow = document.getElementById('discount-row');
+    const discountAmount = document.getElementById('discount-amount');
+    if (discountRow) discountRow.style.display = 'flex';
+    if (discountAmount) discountAmount.textContent = `-$${discount.toFixed(2)}`;
+    
+    // Update total
+    updateOrderSummary();
+    
+    // Show success message
+    alert(`✅ SUCCESS!\n\nPromo code "${promoCode}" applied!\n💰 You saved $${discount.toFixed(2)}`);
+  } else {
+    console.log('❌ Invalid promo code:', promoCode);
+    alert(`❌ Invalid promo code!\n\nTry these codes:\n• SAVE10 (10% off)\n• WELCOME (15% off)\n• PLANT20 (20% off)`);
+  }
+}
+
+window.processPayment = function() {
+  console.log('💳 Process payment clicked');
+  
+  if (!validateCurrentStep()) {
+    console.log('❌ Payment validation failed');
+    return;
+  }
+  
+  // Show loading overlay
+  const overlay = document.getElementById('loading-overlay');
+  if (overlay) overlay.style.display = 'flex';
+  
+  // Get form data
+  const firstName = document.getElementById('firstName').value;
+  const lastName = document.getElementById('lastName').value;
+  const email = document.getElementById('email').value;
+  
+  // Calculate final total
+  const total = parseFloat(document.getElementById('final-total').textContent.replace('$', ''));
+  
+  // Get payment method
+  const paymentMethod = document.querySelector('.payment-method.active')?.getAttribute('data-method') || 'card';
+  
+  console.log('💰 Processing payment:', {
+    name: `${firstName} ${lastName}`,
+    email: email,
+    amount: total,
+    method: paymentMethod,
+    promoCode: appliedPromoCode,
+    discount: appliedDiscount
+  });
+  
+  // Send payment request
+  fetch('/api/payment/checkout', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      name: `${firstName} ${lastName}`,
+      email: email,
+      amount: total,
+      method: paymentMethod,
+      promoCode: appliedPromoCode || null,
+      discount: appliedDiscount || 0
+    })
+  })
+  .then(response => response.json())
+  .then(data => {
+    if (overlay) overlay.style.display = 'none';
+    
+    if (data.success) {
+      console.log('✅ Payment successful!', data);
+      
+      // Update success modal
+      document.getElementById('order-number').textContent = data.transactionId;
+      
+      const deliveryDate = new Date();
+      deliveryDate.setDate(deliveryDate.getDate() + 7);
+      document.getElementById('delivery-date').textContent = deliveryDate.toLocaleDateString();
+      
+      // Show success modal
+      document.getElementById('success-modal').style.display = 'flex';
+      
+      // Clear cart
+      localStorage.removeItem('plant-nursery-cart');
+      
+      // Update cart count if function exists
+      if (typeof updateCartCount === 'function') {
+        updateCartCount();
+      }
+    } else {
+      throw new Error(data.error || 'Payment failed');
+    }
+  })
+  .catch(error => {
+    console.error('❌ Payment error:', error);
+    if (overlay) overlay.style.display = 'none';
+    alert('❌ Payment failed: ' + error.message + '\n\nPlease try again.');
+  });
+}
+
+// ============================================================
+// VALIDATION FUNCTIONS
+// ============================================================
+
+function validateCurrentStep() {
+  switch (currentStep) {
+    case 1:
+      // Order summary - no validation needed
+      return true;
+      
+    case 2:
+      // Shipping information validation
+      const shippingFields = ['firstName', 'lastName', 'email', 'phone', 'address', 'city', 'state', 'zipCode'];
+      let allFilled = true;
+      
+      shippingFields.forEach(fieldId => {
+        const element = document.getElementById(fieldId);
+        if (!element || !element.value.trim()) {
+          if (element) element.style.borderColor = 'red';
+          allFilled = false;
+        } else {
+          if (element) element.style.borderColor = '';
+        }
+      });
+      
+      if (!allFilled) {
+        alert('⚠️ Please fill in all required shipping fields.');
+        return false;
+      }
+      
+      // Validate email format
+      const email = document.getElementById('email').value;
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(email)) {
+        alert('⚠️ Please enter a valid email address.');
+        document.getElementById('email').style.borderColor = 'red';
+        return false;
+      }
+      
+      return true;
+      
+    case 3:
+      // Payment validation
+      const activeMethod = document.querySelector('.payment-method.active')?.getAttribute('data-method');
+      
+      if (activeMethod === 'card') {
+        const paymentFields = ['cardNumber', 'expiryDate', 'cvv', 'cardName'];
+        let allFilled = true;
+        
+        paymentFields.forEach(fieldId => {
+          const element = document.getElementById(fieldId);
+          if (!element || !element.value.trim()) {
+            if (element) element.style.borderColor = 'red';
+            allFilled = false;
+          } else {
+            if (element) element.style.borderColor = '';
+          }
+        });
+        
+        if (!allFilled) {
+          alert('⚠️ Please fill in all payment card fields.');
+          return false;
+        }
+      }
+      
+      return true;
+      
+    default:
+      return true;
+  }
+}
+
+// ============================================================
+// INITIALIZE ON PAGE LOAD
+// ============================================================
+
+document.addEventListener('DOMContentLoaded', function() {
+  console.log('🌱 DOM loaded, initializing checkout...');
+  initializeCheckout();
+  
+  // Test global functions
+  console.log('🧪 Global functions check:');
+  console.log('  nextStep:', typeof window.nextStep);
+  console.log('  prevStep:', typeof window.prevStep);
+  console.log('  applyPromoCode:', typeof window.applyPromoCode);
+  console.log('  processPayment:', typeof window.processPayment);
+  
+  // Add event listeners to buttons as backup
+  console.log('🔧 Adding backup event listeners to buttons...');
+  
+  // Find all "Continue to Shipping" and "Continue to Payment" buttons
+  const nextButtons = document.querySelectorAll('button[onclick*="nextStep"]');
+  console.log('Found', nextButtons.length, 'next step buttons');
+  
+  nextButtons.forEach((btn, index) => {
+    console.log('Adding click listener to button', index + 1);
+    btn.addEventListener('click', function(e) {
+      console.log('🔘 Button clicked via addEventListener!', e.target);
+    });
+  });
+  
+  // Test if we can call the function directly
+  console.log('🧪 Testing if nextStep can be called directly...');
+  try {
+    console.log('Calling window.nextStep exists:', typeof window.nextStep === 'function');
+  } catch (e) {
+    console.error('Error testing nextStep:', e);
+  }
+});
+</script>

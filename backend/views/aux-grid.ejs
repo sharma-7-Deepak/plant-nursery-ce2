@@ -1,0 +1,52 @@
+<!-- Generic Grid Page (Pots, Tools, etc.) -->
+<div class="page-header hero-gradient">
+    <div class="floating-leaves">
+        <div class="leaf leaf-1"><i class="fas fa-leaf"></i></div>
+        <div class="leaf leaf-2"><i class="fas fa-leaf"></i></div>
+        <div class="leaf leaf-3"><i class="fas fa-leaf"></i></div>
+        <div class="leaf leaf-4"><i class="fas fa-leaf"></i></div>
+        <div class="leaf leaf-5"><i class="fas fa-leaf"></i></div>
+    </div>
+    <div class="container">
+        <h1 class="glowing-text animate fade-up"><%= heading || 'Catalog' %></h1>
+        <p class="page-subtitle gradient-text animate fade-up delay-2"><%= subheading || '' %></p>
+    </div>
+</div>
+
+<section class="products-section">
+    <div class="container">
+        <div class="products-grid">
+            <% (items || []).forEach(item => { %>
+                <div class="product-card" data-product-id="<%= item.id %>">
+                    <div class="product-image">
+                        <% if (item.image) { %>
+                            <img src="<%= item.image %>" alt="<%= item.name %>" loading="lazy">
+                        <% } else { %>
+                            <div class="placeholder-image">
+                                <i class="fas fa-box"></i>
+                            </div>
+                        <% } %>
+                        <% if (item.badge) { %>
+                            <div class="product-badge"><%= item.badge %></div>
+                        <% } %>
+                    </div>
+                    <div class="product-details">
+                        <h3 class="product-title"><%= item.name %></h3>
+                        <div class="product-price">
+                            <span class="current-price">$<%= Number(item.price).toFixed(2) %></span>
+                        </div>
+                        <div class="product-actions">
+                            <button class="add-to-cart-btn" onclick="addToCart(<%= item.id %>)" <% if (!item.inStock) { %>disabled<% } %>>
+                                <i class="fas fa-shopping-cart"></i> <%= ctaLabel || (item.inStock ? 'Add to Cart' : 'Out of Stock') %>
+                            </button>
+                            <button class="wishlist-btn" title="Add to Wishlist">
+                                <i class="fas fa-heart"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            <% }) %>
+        </div>
+    </div>
+</section>
+

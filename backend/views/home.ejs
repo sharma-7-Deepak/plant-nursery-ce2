@@ -1,0 +1,651 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- Dynamic page title -->
+    <title><%= pageTitle || 'Plant Nursery - Premium Plants & Garden Supplies' %></title>
+    
+    <!-- Meta description for SEO -->
+    <meta name="description" content="<%= metaDescription || 'Discover premium plants, garden supplies, and expert care tips at our online plant nursery. From indoor houseplants to outdoor garden varieties.' %>">
+    
+    <!-- Open Graph meta tags for social sharing -->
+    <meta property="og:title" content="<%= pageTitle || 'Plant Nursery - Premium Plants & Garden Supplies' %>">
+    <meta property="og:description" content="<%= metaDescription || 'Discover premium plants and garden supplies at our online plant nursery.' %>">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="<%= canonicalUrl || 'https://plantnursery.com' %>">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    
+    <!-- CSS Files -->
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/responsive.css">
+    
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Navigation Header -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-container">
+            <!-- Logo -->
+            <div class="nav-logo">
+                <a href="/">
+                    <i class="fas fa-leaf"></i>
+                    <span>PlantNursery</span>
+                </a>
+            </div>
+            
+            <!-- Navigation Links -->
+            <ul class="nav-menu" id="navMenu">
+                <li class="nav-item">
+                    <a href="/" class="nav-link <%= currentPage === 'home' ? 'active' : '' %>">
+                        <i class="fas fa-home"></i> Home
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="/products" class="nav-link <%= currentPage === 'products' ? 'active' : '' %>">
+                        <i class="fas fa-seedling"></i> Products
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="/categories" class="nav-link <%= currentPage === 'categories' ? 'active' : '' %>">
+                        <i class="fas fa-list"></i> Categories
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="/gifting" class="nav-link <%= currentPage === 'gifting' ? 'active' : '' %>">
+                        <i class="fas fa-gift"></i> Gifting
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="/about" class="nav-link <%= currentPage === 'about' ? 'active' : '' %>">
+                        <i class="fas fa-info-circle"></i> About
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="/services" class="nav-link <%= currentPage === 'services' ? 'active' : '' %>">
+                        <i class="fas fa-tools"></i> Services
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="/contact" class="nav-link <%= currentPage === 'contact' ? 'active' : '' %>">
+                        <i class="fas fa-envelope"></i> Contact
+                    </a>
+                </li>
+            </ul>
+            
+            <!-- Cart and Search Icons -->
+            <div class="nav-icons">
+                <!-- Search Icon -->
+                <button class="nav-icon" id="searchToggle" aria-label="Toggle search">
+                    <i class="fas fa-search"></i>
+                </button>
+                
+                <!-- Cart Icon -->
+                <button class="nav-icon cart-icon" id="cartToggle" aria-label="View cart">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span class="cart-count" id="cart-count">0</span>
+                </button>
+                
+                <!-- User / Auth -->
+                <% if (typeof currentUser !== 'undefined' && currentUser) { %>
+                    <div class="nav-user dropdown">
+                        <i class="fas fa-user"></i>
+                        <span class="nav-username"><%= currentUser.name.split(' ')[0] %></span>
+                        <button id="logoutBtn" class="btn btn-link">Logout</button>
+                    </div>
+                <% } else { %>
+                    <a href="/login" class="nav-link">Login</a>
+                <% } %>
+
+                <!-- Mobile Menu Toggle -->
+                <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation menu">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+            </div>
+        </div>
+        
+        <!-- Search Bar (hidden by default) -->
+        <div class="search-bar" id="searchBar">
+            <div class="search-container">
+                <input type="text" id="searchInput" placeholder="Search for plants..." autocomplete="off">
+                <button id="searchButton" aria-label="Search">
+                    <i class="fas fa-search"></i>
+                </button>
+                <button id="clearSearch" class="clear-search" aria-label="Clear search">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="search-suggestions" id="searchSuggestions"></div>
+        </div>
+    </nav>
+    
+    <!-- Main Content Area -->
+    <main class="main-content">
+<!-- Hero Section -->
+<section class="hero">
+    <div class="hero-content">
+        <h1 class="hero-title">Welcome to PlantNursery</h1>
+        <p class="hero-subtitle">Discover premium plants and transform your space into a green paradise</p>
+        <div class="hero-buttons">
+            <a href="/products" class="btn btn-primary btn-glow btn-large">Shop Now</a>
+            <a href="/categories" class="btn btn-outline btn-large">Browse Categories</a>
+        </div>
+    </div>
+    <div class="hero-stats">
+        <div class="stat">
+            <div class="stat-number"><%= stats.totalProducts || 0 %></div>
+            <div class="stat-label">Premium Plants</div>
+        </div>
+        <div class="stat">
+            <div class="stat-number"><%= (stats.averageRating || 0) %></div>
+            <div class="stat-label">Average Rating</div>
+        </div>
+        <div class="stat">
+            <div class="stat-number"><%= stats.totalReviews || 0 %></div>
+            <div class="stat-label">Happy Customers</div>
+        </div>
+    </div>
+</section>
+
+<!-- Categories Section -->
+<section class="categories-section">
+    <div class="container">
+        <h2 class="section-title">Shop by Category</h2>
+        <p class="section-subtitle">Find the perfect plants for your space and lifestyle</p>
+        
+        <div class="categories-grid">
+            <% categories.forEach(category => { %>
+                <div class="category-card">
+                    <a href="/products?category=<%= category.name %>">
+                        <div class="category-icon">
+                            <% if (category.name === 'indoor') { %>
+                                <i class="fas fa-home"></i>
+                            <% } else if (category.name === 'outdoor') { %>
+                                <i class="fas fa-tree"></i>
+                            <% } else if (category.name === 'flowering') { %>
+                                <i class="fas fa-flower"></i>
+                            <% } else if (category.name === 'succulent') { %>
+                                <i class="fas fa-cactus"></i>
+                            <% } else { %>
+                                <i class="fas fa-leaf"></i>
+                            <% } %>
+                        </div>
+                        <h3><%= category.name.charAt(0).toUpperCase() + category.name.slice(1) %> Plants</h3>
+                        <p><%= category.count %> varieties available</p>
+                        <span class="category-link">
+                            Explore <i class="fas fa-arrow-right"></i>
+                        </span>
+                    </a>
+                </div>
+            <% }) %>
+        </div>
+    </div>
+</section>
+
+<!-- Featured Products Section -->
+<section class="featured-section">
+    <div class="container">
+        <h2 class="section-title">Featured Plants</h2>
+        <p class="section-subtitle">Handpicked favorites that are perfect for any plant lover</p>
+        
+        <div class="products-grid">
+            <% featuredProducts.forEach(product => { %>
+                <div class="product-card" data-product-id="<%= product.id %>">
+                    <div class="product-image">
+                        <% if (product.image) { %>
+                            <img src="<%= product.image %>" alt="<%= product.name %>" loading="lazy">
+                        <% } else { %>
+                            <div class="placeholder-image">
+                                <i class="fas fa-seedling"></i>
+                            </div>
+                        <% } %>
+                        
+                        <% if (product.discount > 0) { %>
+                            <div class="product-badge discount">-<%= product.discount %>%</div>
+                        <% } else if (product.badge) { %>
+                            <div class="product-badge <%= product.badge.replace(/\s+/g, '-').toLowerCase() %>">
+                                <%= product.badge %>
+                            </div>
+                        <% } %>
+                        
+                        <div class="product-actions">
+                            <button class="quick-view-btn" onclick="openQuickView(<%= product.id %>)" aria-label="Quick view">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                            <button class="add-to-cart-btn" onclick="addToCart(<%= product.id %>)" aria-label="Add to cart" <% if (!product.inStock) { %>disabled<% } %>>
+                                <i class="fas fa-shopping-cart"></i>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="product-info">
+                        <h3 class="product-name">
+                            <a href="/products/<%= product.id %>"><%= product.name %></a>
+                        </h3>
+                        
+                        <div class="product-rating">
+                            <div class="stars">
+                                <% for (let i = 1; i <= 5; i++) { %>
+                                    <i class="fas fa-star <%= i <= product.rating ? 'filled' : '' %>"></i>
+                                <% } %>
+                            </div>
+                            <span class="rating-text">(<%= product.reviews %>)</span>
+                        </div>
+                        
+                        <div class="product-price">
+                            <% if (product.originalPrice && product.originalPrice > product.price) { %>
+                                <span class="original-price">$<%= product.originalPrice.toFixed(2) %></span>
+                            <% } %>
+                            <span class="current-price">$<%= product.price.toFixed(2) %></span>
+                        </div>
+                        
+                        <div class="product-meta">
+                            <span class="care-level <%= product.care %>">
+                                <i class="fas fa-leaf"></i> <%= product.care %> care
+                            </span>
+                            <span class="size">
+                                <i class="fas fa-ruler"></i> <%= product.size %>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            <% }) %>
+        </div>
+        
+        <div class="section-footer">
+            <a href="/products" class="btn btn-primary btn-glow">View All Products</a>
+        </div>
+    </div>
+</section>
+
+<!-- Popular Products Section -->
+<section class="popular-section">
+    <div class="container">
+        <h2 class="section-title">Customer Favorites</h2>
+        <p class="section-subtitle">Most loved plants by our community of plant enthusiasts</p>
+        
+        <div class="products-grid">
+            <% popularProducts.forEach(product => { %>
+                <div class="product-card" data-product-id="<%= product.id %>">
+                    <div class="product-image">
+                        <% if (product.image) { %>
+                            <img src="<%= product.image %>" alt="<%= product.name %>" loading="lazy">
+                        <% } else { %>
+                            <div class="placeholder-image">
+                                <i class="fas fa-seedling"></i>
+                            </div>
+                        <% } %>
+                        
+                        <% if (product.discount > 0) { %>
+                            <div class="product-badge discount">-<%= product.discount %>%</div>
+                        <% } else if (product.badge) { %>
+                            <div class="product-badge <%= product.badge.replace(/\s+/g, '-').toLowerCase() %>">
+                                <%= product.badge %>
+                            </div>
+                        <% } %>
+                        
+                        <div class="product-actions">
+                            <button class="quick-view-btn" onclick="openQuickView(<%= product.id %>)" aria-label="Quick view">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                            <button class="add-to-cart-btn" onclick="addToCart(<%= product.id %>)" aria-label="Add to cart" <% if (!product.inStock) { %>disabled<% } %>>
+                                <i class="fas fa-shopping-cart"></i>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="product-info">
+                        <h3 class="product-name">
+                            <a href="/products/<%= product.id %>"><%= product.name %></a>
+                        </h3>
+                        
+                        <div class="product-rating">
+                            <div class="stars">
+                                <% for (let i = 1; i <= 5; i++) { %>
+                                    <i class="fas fa-star <%= i <= product.rating ? 'filled' : '' %>"></i>
+                                <% } %>
+                            </div>
+                            <span class="rating-text">(<%= product.reviews %>)</span>
+                        </div>
+                        
+                        <div class="product-price">
+                            <% if (product.originalPrice && product.originalPrice > product.price) { %>
+                                <span class="original-price">$<%= product.originalPrice.toFixed(2) %></span>
+                            <% } %>
+                            <span class="current-price">$<%= product.price.toFixed(2) %></span>
+                        </div>
+                        
+                        <div class="product-meta">
+                            <span class="care-level <%= product.care %>">
+                                <i class="fas fa-leaf"></i> <%= product.care %> care
+                            </span>
+                            <span class="size">
+                                <i class="fas fa-ruler"></i> <%= product.size %>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            <% }) %>
+        </div>
+    </div>
+</section>
+
+<!-- Features Section -->
+<section class="features-section">
+    <div class="container">
+        <h2 class="section-title">Why Choose PlantNursery?</h2>
+        
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-truck"></i>
+                </div>
+                <h3>Free Shipping</h3>
+                <p>Free delivery on orders over $75. Fast, safe shipping with plant care instructions.</p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-seedling"></i>
+                </div>
+                <h3>Healthy Plants Guaranteed</h3>
+                <p>All plants are carefully selected and health-checked before shipping to your door.</p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-comments"></i>
+                </div>
+                <h3>Expert Care Support</h3>
+                <p>Get personalized plant care advice from our team of gardening experts.</p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-undo"></i>
+                </div>
+                <h3>30-Day Returns</h3>
+                <p>Not happy with your plant? Return it within 30 days for a full refund.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Newsletter Section -->
+<section class="newsletter-section">
+    <div class="container">
+        <div class="newsletter-content">
+            <div class="newsletter-text">
+                <h2>Stay in the Loop!</h2>
+                <p>Get plant care tips, seasonal guides, and exclusive offers delivered to your inbox.</p>
+            </div>
+            <div class="newsletter-form-wrapper">
+                <form class="newsletter-form" id="homeNewsletterForm">
+                    <div class="form-group">
+                        <input type="email" id="homeNewsletterEmail" placeholder="Enter your email" required>
+                        <button type="submit" class="btn btn-primary">
+                            Subscribe <i class="fas fa-paper-plane"></i>
+                        </button>
+                    </div>
+                    <p class="form-note">
+                        <i class="fas fa-shield-alt"></i>
+                        We respect your privacy. Unsubscribe at any time.
+                    </p>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Inline JavaScript for home page specific functionality -->
+<% 
+    const inlineJS = `
+        // Home page specific JavaScript
+        document.addEventListener('DOMContentLoaded', function() {
+            // Newsletter form submission
+            const newsletterForm = document.getElementById('homeNewsletterForm');
+            if (newsletterForm) {
+                newsletterForm.addEventListener('submit', async function(e) {
+                    e.preventDefault();
+                    
+                    const email = document.getElementById('homeNewsletterEmail').value;
+                    const submitBtn = this.querySelector('button[type="submit"]');
+                    const originalText = submitBtn.innerHTML;
+                    
+                    try {
+                        // Show loading state
+                        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Subscribing...';
+                        submitBtn.disabled = true;
+                        
+                        const response = await fetch('/api/newsletter/subscribe', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                            },
+                            body: JSON.stringify({ email: email })
+                        });
+                        
+                        const data = await response.json();
+                        
+                        if (data.success) {
+                            showNotification('Successfully subscribed to newsletter!', 'success');
+                            this.reset();
+                        } else {
+                            throw new Error(data.message || 'Subscription failed');
+                        }
+                    } catch (error) {
+                        showNotification(error.message || 'Failed to subscribe. Please try again.', 'error');
+                    } finally {
+                        // Restore button state
+                        submitBtn.innerHTML = originalText;
+                        submitBtn.disabled = false;
+                    }
+                });
+            }
+            
+            // Animate stats on scroll
+            const observeStats = () => {
+                const statsSection = document.querySelector('.hero-stats');
+                if (!statsSection) return;
+                
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            entry.target.classList.add('animate');
+                            observer.unobserve(entry.target);
+                        }
+                    });
+                });
+                
+                observer.observe(statsSection);
+            };
+            
+            observeStats();
+        });
+        
+        // Product card interactions
+        function openQuickView(productId) {
+            // This function is implemented in the main.js file
+            // but we can add home-specific enhancements here
+            console.log('Opening quick view for product:', productId);
+            
+            // Call the main quick view function
+            if (typeof window.openQuickView === 'function') {
+                window.openQuickView(productId);
+            } else {
+                // Fallback: redirect to product page
+                window.location.href = '/products/' + productId;
+            }
+        }
+        
+        // Enhanced add to cart with home page specific tracking
+        async function addToCart(productId, quantity = 1) {
+            try {
+                // Call the main addToCart function from cart.js
+                if (typeof window.addToCart === 'function') {
+                    await window.addToCart(productId, quantity);
+                    
+                    // Home page specific analytics or tracking could go here
+                    console.log('Product added to cart from home page:', productId);
+                } else {
+                    throw new Error('Cart functionality not available');
+                }
+            } catch (error) {
+                console.error('Error adding product to cart:', error);
+                showNotification('Failed to add product to cart', 'error');
+            }
+        }
+    `;
+%>
+
+    </main>
+    
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-container">
+            <!-- Footer Top -->
+            <div class="footer-top">
+                <div class="footer-section">
+                    <h3>PlantNursery</h3>
+                    <p>Your trusted partner for premium plants and gardening supplies. We help bring nature closer to your home.</p>
+                    <div class="social-links">
+                        <a href="#" aria-label="Facebook"><i class="fab fa-facebook"></i></a>
+                        <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                        <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                        <a href="#" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+                
+                <div class="footer-section">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="/">Home</a></li>
+                        <li><a href="/products">All Products</a></li>
+                        <li><a href="/categories/indoor">Indoor Plants</a></li>
+                        <li><a href="/categories/outdoor">Outdoor Plants</a></li>
+                        <li><a href="/care-guide">Plant Care Guide</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h4>Customer Care</h4>
+                    <ul>
+                        <li><a href="/contact">Contact Us</a></li>
+                        <li><a href="/shipping">Shipping Info</a></li>
+                        <li><a href="/returns">Returns & Refunds</a></li>
+                        <li><a href="/faq">FAQ</a></li>
+                        <li><a href="/support">Plant Care Support</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h4>Newsletter</h4>
+                    <p>Subscribe for plant care tips, new arrivals, and exclusive offers!</p>
+                    <div class="newsletter-form">
+                        <input type="email" id="newsletterEmail" placeholder="Your email address" required>
+                        <button type="button" id="newsletterSubscribe">
+                            <i class="fas fa-paper-plane"></i>
+                        </button>
+                    </div>
+                    <div class="contact-info">
+                        <p><i class="fas fa-phone"></i> +1 (555) 123-4567</p>
+                        <p><i class="fas fa-envelope"></i> info@plantnursery.com</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Footer Bottom -->
+            <div class="footer-bottom">
+                <div class="footer-bottom-content">
+                    <p>&copy; <%= new Date().getFullYear() %> PlantNursery. All rights reserved.</p>
+                    <div class="footer-links">
+                        <a href="/privacy">Privacy Policy</a>
+                        <a href="/terms">Terms of Service</a>
+                        <a href="/cookies">Cookie Policy</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+    
+    <!-- Cart Modal -->
+    <div class="modal cart-modal" id="cart-modal">
+        <div class="cart-modal-content">
+            <div class="cart-header">
+                <h2>Shopping Cart</h2>
+                <button class="close-modal" id="close-cart" aria-label="Close cart">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            
+            <div class="cart-body" id="cart-items">
+                <!-- Cart items will be loaded here dynamically by cart.js -->
+            </div>
+            
+            <div class="cart-footer">
+                <div class="cart-total">
+                    <div class="total-row">
+                        <span>Total:</span>
+                        <span id="cart-total">$0.00</span>
+                    </div>
+                </div>
+                <div class="cart-actions">
+                    <button class="btn btn-secondary continue-shopping">Continue Shopping</button>
+                    <button class="btn btn-primary checkout-btn">Proceed to Checkout</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="loading-spinner">
+            <i class="fas fa-leaf"></i>
+            <p>Loading...</p>
+        </div>
+    </div>
+    
+    <!-- Notification Container -->
+    <div class="notification-container" id="notificationContainer"></div>
+    
+    <!-- JavaScript Files -->
+    <script>
+        // Make cart session ID available globally
+        window.cartSessionId = '<%= cartSessionId || '' %>';
+        
+        // Make current page available for JavaScript
+        window.currentPage = '<%= currentPage || '' %>';
+        
+        // API base URL for AJAX calls
+        window.apiBaseUrl = '/api';
+        
+        // Configuration object
+        window.appConfig = {
+            cartSessionId: '<%= cartSessionId || '' %>',
+            currentPage: '<%= currentPage || '' %>',
+            apiBaseUrl: '/api',
+            enableNotifications: true,
+            autoSaveCart: true
+        };
+    </script>
+    
+    <!-- Core JavaScript modules -->
+    <script src="/js/main.js"></script>
+    <script src="/js/cart.js"></script>
+    <script src="/js/products.js"></script>
+    <script src="/js/filters.js"></script>
+
+<script>
+<%- inlineJS %>
+</script>
+</body>
+</html>
